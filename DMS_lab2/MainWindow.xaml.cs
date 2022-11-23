@@ -12,6 +12,7 @@ namespace DMS_lab2
     public partial class MainWindow : Window
     {
         Player player;
+        double media_pos;
         public MainWindow()
         {
             InitializeComponent();
@@ -21,15 +22,19 @@ namespace DMS_lab2
             VlcControl.SourceProvider.CreatePlayer(libDirectory);
             player = new Player(VlcControl.SourceProvider.MediaPlayer);
             VlcControl.SourceProvider.MediaPlayer.PositionChanged += player_PositionChanged;
+            media_pos = 0.0;
         }
 
         private void player_PositionChanged(object sender, VlcMediaPlayerPositionChangedEventArgs e)
         {
             Dispatcher.BeginInvoke(new ThreadStart(() =>
             {
+                media_pos = e.NewPosition;
                 TimeSpan currentPosition = TimeSpan.FromSeconds(e.NewPosition * player.GetMediaDuration().TotalSeconds);
                 timePassedTextBlock.Text = currentPosition.ToString(@"hh\:mm\:ss");
                 timeLeftTextBlock.Text = player.GetMediaDuration().Subtract(currentPosition).ToString(@"hh\:mm\:ss");
+
+                playerSlider.Value = e.NewPosition;
             }
             ));
         }
@@ -62,6 +67,14 @@ namespace DMS_lab2
             {
                 player.Pause();
                 playButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Play;
+            }
+        }
+
+        private void playerSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if(e.NewValue != media_pos)
+            {
+                player.SetPosition(e.NewValue);
             }
         }
     }

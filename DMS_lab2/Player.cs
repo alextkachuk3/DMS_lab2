@@ -29,6 +29,11 @@ namespace DMS_lab2
             paused = false;
         }
 
+        public void SetPosition(double position)
+        {
+            player.Position = (float)position;
+        }
+
         public void Continue()
         {
             if (paused is true)
