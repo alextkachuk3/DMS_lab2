@@ -7,7 +7,8 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:DMS_lab2"
         mc:Ignorable="d"
-        Title="Video player" Height="450" Width="800">
+        Title="Video player" Icon="Icon.ico" Height="450" Width="800"
+        MinHeight="120" MinWidth="330">
     <Grid>
 
         <Grid.RowDefinitions>
