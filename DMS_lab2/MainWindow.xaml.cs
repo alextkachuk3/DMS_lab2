@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media;
 using Vlc.DotNet.Core;
 
 namespace DMS_lab2
@@ -12,6 +13,9 @@ namespace DMS_lab2
     {
         Player player;
         double media_pos;
+        bool rewind;
+        bool forward;
+        double rewinding_speed;
         public MainWindow()
         {
             InitializeComponent();
@@ -22,18 +26,31 @@ namespace DMS_lab2
             player = new Player(VlcControl.SourceProvider.MediaPlayer);
             VlcControl.SourceProvider.MediaPlayer.PositionChanged += player_PositionChanged;
             media_pos = 0.0;
+            rewinding_speed = 0.025;
+            rewind = false;
+            forward = false;
         }
 
         private void player_PositionChanged(object sender, VlcMediaPlayerPositionChangedEventArgs e)
         {
             Dispatcher.BeginInvoke(new ThreadStart(() =>
             {
+                if (forward)
+                {
+                    player.SetPosition(e.NewPosition + rewinding_speed);
+                }
+                else if (rewind)
+                {
+                    player.SetPosition(e.NewPosition - rewinding_speed);
+                }
+
                 media_pos = e.NewPosition;
                 TimeSpan currentPosition = TimeSpan.FromSeconds(e.NewPosition * player.GetMediaDuration().TotalSeconds);
                 timePassedTextBlock.Text = currentPosition.ToString(@"hh\:mm\:ss");
                 timeLeftTextBlock.Text = player.GetMediaDuration().Subtract(currentPosition).ToString(@"hh\:mm\:ss");
 
                 playerSlider.Value = e.NewPosition;
+
             }
             ));
         }
@@ -85,6 +102,48 @@ namespace DMS_lab2
                 player.Play(window.GetUrl());
                 playButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
                 UpdateFileName();
+            }
+        }
+
+        private void rewindButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (rewind)
+            {
+                rewind = false;
+                rewindButton.Background = null;
+            }
+            else
+            {
+                rewind = true;
+                player.SetPosition(media_pos - rewinding_speed);
+                rewindButton.Background = new SolidColorBrush(Color.FromRgb(103, 58, 183));
+            }
+
+            if (forward)
+            {
+                forward = false;
+                forwardButton.Background = null;
+            }
+        }
+
+        private void forwardButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (forward)
+            {
+                forward = false;
+                forwardButton.Background = null;
+            }
+            else
+            {
+                forward = true;
+                player.SetPosition(media_pos + rewinding_speed);
+                forwardButton.Background = new SolidColorBrush(Color.FromRgb(103, 58, 183));
+            }
+
+            if (rewind)
+            {
+                rewind = false;
+                rewindButton.Background = null;
             }
         }
     }
