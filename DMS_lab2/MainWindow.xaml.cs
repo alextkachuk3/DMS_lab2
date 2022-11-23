@@ -1,7 +1,11 @@
 ﻿using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using Vlc.DotNet.Core;
 
 namespace DMS_lab2
 {
@@ -16,6 +20,18 @@ namespace DMS_lab2
             var libDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "vlc"));
             VlcControl.SourceProvider.CreatePlayer(libDirectory);
             player = new Player(VlcControl.SourceProvider.MediaPlayer);
+            VlcControl.SourceProvider.MediaPlayer.PositionChanged += player_PositionChanged;
+        }
+
+        private void player_PositionChanged(object sender, VlcMediaPlayerPositionChangedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(new ThreadStart(() =>
+            {
+                TimeSpan currentPosition = TimeSpan.FromSeconds(e.NewPosition * player.GetMediaDuration().TotalSeconds);
+                timePassedTextBlock.Text = currentPosition.ToString(@"hh\:mm\:ss");
+                timeLeftTextBlock.Text = player.GetMediaDuration().Subtract(currentPosition).ToString(@"hh\:mm\:ss");
+            }
+            ));
         }
 
         private void openFileButton_Click(object sender, RoutedEventArgs e)
@@ -37,8 +53,8 @@ namespace DMS_lab2
 
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
-            if(player.IsPaused() is true)
-            {                
+            if (player.IsPaused() is true)
+            {
                 player.Continue();
                 playButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
             }

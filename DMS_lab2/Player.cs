@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Vlc.DotNet.Core;
-using Vlc.DotNet.Wpf;
 
 namespace DMS_lab2
 {
@@ -21,6 +16,11 @@ namespace DMS_lab2
         public string GetMediaTitle()
         {
             return player.GetMedia().Title;
+        }
+
+        public TimeSpan GetMediaDuration()
+        {
+            return player.GetMedia().Duration;
         }
 
         public void Play(string URI)
@@ -44,7 +44,7 @@ namespace DMS_lab2
             {
                 paused = true;
                 player.Pause();
-            }            
+            }
         }
 
         public bool IsPaused()
