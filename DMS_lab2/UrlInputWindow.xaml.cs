@@ -23,7 +23,7 @@ namespace DMS_lab2
 
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult= true;
+            DialogResult = true;
             Close();
         }
 

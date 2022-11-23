@@ -56,5 +56,10 @@ namespace DMS_lab2
         {
             return paused;
         }
+
+        public bool IsPlaying()
+        {
+            return player.IsPlaying();
+        }
     }
 }

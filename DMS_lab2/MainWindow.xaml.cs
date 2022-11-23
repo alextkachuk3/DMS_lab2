@@ -12,10 +12,13 @@ namespace DMS_lab2
     public partial class MainWindow : Window
     {
         Player player;
+        string ulr;
         double currentMediaPosition;
         bool rewind;
         bool forward;
         double rewindingSpeed;
+        bool local;
+        bool stream;
         public MainWindow()
         {
             InitializeComponent();
@@ -29,6 +32,8 @@ namespace DMS_lab2
             rewindingSpeed = 0.025;
             rewind = false;
             forward = false;
+            local = false;
+            stream = false;
         }
 
         private void player_PositionChanged(object sender, VlcMediaPlayerPositionChangedEventArgs e)
@@ -61,9 +66,12 @@ namespace DMS_lab2
             openFileDialog.Filter = "All Media Files|*.wav;*.aac;*.wma;*.wmv;*.avi;*.mpg;*.mpeg;*.m1v;*.mp2;*.mp3;*.mpa;*.mpe;*.m3u;*.mp4;*.mov;*.3g2;*.3gp2;*.3gp;*.3gpp;*.m4a;*.cda;*.aif;*.aifc;*.aiff;*.rmi;*.mkv;*.WAV;*.AAC;*.WMA;*.WMV;*.AVI;*.MPG;*.MPEG;*.M1V;*.MP2;*.MP3;*.MPA;*.MPE;*.M3U;*.MP4;*.MOV;*.3G2;*.3GP2;*.3GP;*.3GPP;*.M4A;*.CDA;*.AIF;*.AIFC;*.AIFF;*.RMI;*.MKV";
             if (openFileDialog.ShowDialog() is true)
             {
+                ulr = openFileDialog.FileName;
                 player.Play(openFileDialog.FileName);
                 playButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
                 UpdateFileName();
+                local = true;
+                stream = false;
             }
         }
 
@@ -81,8 +89,16 @@ namespace DMS_lab2
             }
             else
             {
-                player.Pause();
-                playButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Play;
+                if (!player.IsPlaying() && local)
+                {
+                    player.Play(ulr);
+                    playButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
+                }
+                else
+                {
+                    player.Pause();
+                    playButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Play;
+                }
             }
         }
 
@@ -102,6 +118,8 @@ namespace DMS_lab2
                 player.Play(window.GetUrl());
                 playButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
                 UpdateFileName();
+                stream = true;
+                local = false;
             }
         }
 
