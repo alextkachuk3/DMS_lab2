@@ -1,0 +1,26 @@
+﻿<Window x:Class="DMS_lab2.UrlInputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DMS_lab2"
+        mc:Ignorable="d"
+        Title="Enter URL" ResizeMode="NoResize" Height="80" Width="515">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="90*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="50*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Text="URL:" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <TextBox x:Name="urlTextBox" Grid.Column="1"></TextBox>
+
+        <Button x:Name="okButton" Height="25" Width="50" Grid.Column="1" Background="{x:Null}" Content="Ok" Foreground="#DD000000" Grid.Row="1" FontSize="12" Margin="404,2,10,2" HorizontalAlignment="Center" VerticalAlignment="Center" Click="okButton_Click"/>
+
+    </Grid>
+</Window>

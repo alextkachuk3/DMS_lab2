@@ -64,7 +64,7 @@
                     <Button x:Name="openFileButton" Width="30" Height="30" Padding="0,0,0,0" Background="{x:Null}" Click="openFileButton_Click">
                         <materialDesign:PackIcon Kind="Folder" Width="20" Height="20"/>
                     </Button>
-                    <Button x:Name="openStreamButton" Width="30" Height="30" Margin="5,0,0,0" Padding="0,0,0,0" Background="{x:Null}">
+                    <Button x:Name="openStreamButton" Width="30" Height="30" Margin="5,0,0,0" Padding="0,0,0,0" Background="{x:Null}" Click="openStreamButton_Click">
                         <materialDesign:PackIcon Kind="Cloud" Width="20" Height="20"/>
                     </Button>
                 </StackPanel>

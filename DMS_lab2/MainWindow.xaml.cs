@@ -71,9 +71,20 @@ namespace DMS_lab2
 
         private void playerSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if(e.NewValue != media_pos)
+            if (e.NewValue != media_pos)
             {
                 player.SetPosition(e.NewValue);
+            }
+        }
+
+        private void openStreamButton_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new UrlInputWindow();
+            if (window.ShowDialog() is true)
+            {
+                player.Play(window.GetUrl());
+                playButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
+                UpdateFileName();
             }
         }
     }
