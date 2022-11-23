@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace DMS_lab2
 {
-    /// <summary>
-    /// Interaction logic for UrlInputWindow.xaml
-    /// </summary>
     public partial class UrlInputWindow : Window
     {
         public UrlInputWindow()

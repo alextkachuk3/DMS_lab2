@@ -12,10 +12,10 @@ namespace DMS_lab2
     public partial class MainWindow : Window
     {
         Player player;
-        double media_pos;
+        double currentMediaPosition;
         bool rewind;
         bool forward;
-        double rewinding_speed;
+        double rewindingSpeed;
         public MainWindow()
         {
             InitializeComponent();
@@ -25,8 +25,8 @@ namespace DMS_lab2
             VlcControl.SourceProvider.CreatePlayer(libDirectory);
             player = new Player(VlcControl.SourceProvider.MediaPlayer);
             VlcControl.SourceProvider.MediaPlayer.PositionChanged += player_PositionChanged;
-            media_pos = 0.0;
-            rewinding_speed = 0.025;
+            currentMediaPosition = 0.0;
+            rewindingSpeed = 0.025;
             rewind = false;
             forward = false;
         }
@@ -37,14 +37,14 @@ namespace DMS_lab2
             {
                 if (forward)
                 {
-                    player.SetPosition(e.NewPosition + rewinding_speed);
+                    player.SetPosition(e.NewPosition + rewindingSpeed);
                 }
                 else if (rewind)
                 {
-                    player.SetPosition(e.NewPosition - rewinding_speed);
+                    player.SetPosition(e.NewPosition - rewindingSpeed);
                 }
 
-                media_pos = e.NewPosition;
+                currentMediaPosition = e.NewPosition;
                 TimeSpan currentPosition = TimeSpan.FromSeconds(e.NewPosition * player.GetMediaDuration().TotalSeconds);
                 timePassedTextBlock.Text = currentPosition.ToString(@"hh\:mm\:ss");
                 timeLeftTextBlock.Text = player.GetMediaDuration().Subtract(currentPosition).ToString(@"hh\:mm\:ss");
@@ -58,7 +58,7 @@ namespace DMS_lab2
         private void openFileButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "All Media Files|*.wav;*.aac;*.wma;*.wmv;*.avi;*.mpg;*.mpeg;*.m1v;*.mp2;*.mp3;*.mpa;*.mpe;*.m3u;*.mp4;*.mov;*.3g2;*.3gp2;*.3gp;*.3gpp;*.m4a;*.cda;*.aif;*.aifc;*.aiff;*.rmi;*.mkv;*.WAV;*.AAC;*.WMA;*.WMV;*.AVI;*.MPG;*.MPEG;*.M1V;*.MP2;*.MP3;*.MPA;*.MPE;*.M3U;*.MP4;*.MOV;*.3G2;*.3GP2;*.3GP;*.3GPP;*.M4A;*.CDA;*.AIF;*.AIFC;*.AIFF;*.MID;*.MIDI;*.RMI;*.MKV";
+            openFileDialog.Filter = "All Media Files|*.wav;*.aac;*.wma;*.wmv;*.avi;*.mpg;*.mpeg;*.m1v;*.mp2;*.mp3;*.mpa;*.mpe;*.m3u;*.mp4;*.mov;*.3g2;*.3gp2;*.3gp;*.3gpp;*.m4a;*.cda;*.aif;*.aifc;*.aiff;*.rmi;*.mkv;*.WAV;*.AAC;*.WMA;*.WMV;*.AVI;*.MPG;*.MPEG;*.M1V;*.MP2;*.MP3;*.MPA;*.MPE;*.M3U;*.MP4;*.MOV;*.3G2;*.3GP2;*.3GP;*.3GPP;*.M4A;*.CDA;*.AIF;*.AIFC;*.AIFF;*.RMI;*.MKV";
             if (openFileDialog.ShowDialog() is true)
             {
                 player.Play(openFileDialog.FileName);
@@ -88,7 +88,7 @@ namespace DMS_lab2
 
         private void playerSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (e.NewValue != media_pos)
+            if (e.NewValue != currentMediaPosition)
             {
                 player.SetPosition(e.NewValue);
             }
@@ -115,7 +115,7 @@ namespace DMS_lab2
             else
             {
                 rewind = true;
-                player.SetPosition(media_pos - rewinding_speed);
+                player.SetPosition(currentMediaPosition - rewindingSpeed);
                 rewindButton.Background = new SolidColorBrush(Color.FromRgb(103, 58, 183));
             }
 
@@ -136,7 +136,7 @@ namespace DMS_lab2
             else
             {
                 forward = true;
-                player.SetPosition(media_pos + rewinding_speed);
+                player.SetPosition(currentMediaPosition + rewindingSpeed);
                 forwardButton.Background = new SolidColorBrush(Color.FromRgb(103, 58, 183));
             }
 
