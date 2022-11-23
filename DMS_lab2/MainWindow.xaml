@@ -4,10 +4,70 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpf="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:DMS_lab2"
         mc:Ignorable="d"
         Title="Video player" Height="450" Width="800">
     <Grid>
-        <wpf:VlcControl x:Name="VlcControl" />
+
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="65"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <wpf:VlcControl x:Name="VlcControl" Grid.Row="0" Grid.RowSpan="3"/>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="timePassedTextBlock" Text="00:00:00" Grid.Column="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" IsEnabled="False"/>
+                <Slider Grid.Column="1" Margin="0,2.5,0,0"/>
+                <TextBox x:Name="timeLeftTextBlock" Text="00:00:00" Grid.Column="2" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" IsEnabled="False"/>
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="10,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    <ColumnDefinition Width="40"></ColumnDefinition>
+                    <ColumnDefinition Width="60"></ColumnDefinition>
+                    <ColumnDefinition Width="40"></ColumnDefinition>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="fileNameTextBlock" Text="File name" Grid.Column="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" IsEnabled="False" FontSize="18"/>
+
+                <Button Grid.Column="1" x:Name="rewindButton" Width="25" Height="25" Padding="0,0,0,0" Background="{x:Null}">
+                    <materialDesign:PackIcon Kind="FastRewind" Width="20" Height="20"/>
+                </Button>
+
+                <Button Grid.Column="2" x:Name="playButton" Width="35" Height="35" Padding="0,0,0,0" Background="{x:Null}">
+                    <materialDesign:PackIcon Kind="Play" Width="35" Height="35"/>
+                </Button>
+
+                <Button Grid.Column="3" x:Name="forwardButton" Width="25" Height="25" Padding="0,0,0,0" Background="{x:Null}">
+                    <materialDesign:PackIcon Kind="FastForward" Width="20" Height="20"/>
+                </Button>
+
+                <StackPanel Grid.Column="4" Orientation="Horizontal" FlowDirection="RightToLeft" Margin="0,0,10,0">
+                    <Button x:Name="openFileButton" Width="30" Height="30" Padding="0,0,0,0" Background="{x:Null}">
+                        <materialDesign:PackIcon Kind="Folder" Width="20" Height="20"/>
+                    </Button>
+                    <Button x:Name="openStreamButton" Width="30" Height="30" Margin="5,0,0,0" Padding="0,0,0,0" Background="{x:Null}">
+                        <materialDesign:PackIcon Kind="Cloud" Width="20" Height="20"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
